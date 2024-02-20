@@ -40,18 +40,28 @@ Loads excel files that are in the same folder and with same format,
 then combines them into a dataset.
 }
 \examples{
-# There are several files in the folder which called "test" and is in C: slot.
-# They are "a.xlsx", "b.xlsx", "c.xlsx", which have four columns, and "d.txt".
+# There are several files in the test folder.
+path <- "tests/testthat/data"
+
+# The files include "xlsx", "csv", "txt", and "prn".
+# The files with same extension have same format.
+# "xlsx" files are excel files.
+# "csv" files' data are comma-seperate.
+# "txt" files' data are tab-seperate.
+# "prn" files' data are fixed-width.
+
+# xlsx file
+# "a.xlsx" "b.xlsx" "c.xlsx"
 # Column titles are "Name", "Height", "Weight", and "Score".
 # Data starts from second row.
 
 # Load all excel file that is in the folder and combine them.
-loadEXCEL(Filepath=c("C:/test"))
+loadEXCEL(Filepath=path)
 
 # Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_data".
-loadEXCEL(Dataname=c("Test_data"), Filepath=c("C:/test"), File=c("a.xlsx", "c.xlsx"), Combine=FALSE)
+loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", "c.xlsx"), Combine=FALSE)
 
-# Load all excel file and skip column title, then set the new title.
-loadEXCEL(Filepath=c("C:/test"), Colname=c("Name_d", "H", "W", "score"), Skip=1)
+# Load all excel file and skip column title, then set the new.
+loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
 
 }

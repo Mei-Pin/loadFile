@@ -1,26 +1,3 @@
-<<<<<<< HEAD
-Package: loadFile
-Title: Load files in and combine them
-Version: 0.0.0.9000
-Authors@R: c(
-    person("Wei-Pin", "Hsu", "a179612@gmail.com", role = c("aut", "cre")
-           comment = c(ORCID = "0009-0000-9624-0276")),
-    person("Hadley", "Wickham", "hadley@posit.co", role = c("cph", "ctb"),
-           comment = "Author of included tidyverse and readxl code"),
-    person("Jennifer", "Bryan", "jenny@posit.co", role = c("cph", "ctb"),
-           comment = "Author of included readxl code"),
-    person("asperamanka", , , role = c("cph", "ctb"),
-           comment = "Author of included file_extension code"),
-    person("Posit, PBC", , , role = "cph",
-           comment = "Copyright holder of all R code and all C/C++ code without explicit copyright attribution")
-  )
-Description: Loads excel files that are in the same folder and with same format, 
-    then combines them into a dataset.
-License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-=======
 Package: loadFile
 Title: Load files in and combine them
 Version: 0.0.0.9000
@@ -41,4 +18,3 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
->>>>>>> 5e3999f9e028b3a47adf70428d0b930af470a5dc

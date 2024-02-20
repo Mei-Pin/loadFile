@@ -71,22 +71,22 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read_xlsx(i, col_names=Colname, skip=Skip)
+          Temp_dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read_xlsx(i, col_names=Colname, skip=Skip)
+          Dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
         }
       }
       
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read_xlsx(i, col_names=Colname, skip=Skip)
+          Temp_dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read_xlsx(i, col_names=Colname, skip=Skip)
+          Dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
         }
       }
       
@@ -94,14 +94,14 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read_xlsx(i, col_names=Colname, skip=Skip)
+        Dataset[[i]] <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read_xlsx(i, col_names=Colname, skip=Skip)
+        Dataset[[i]] <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
       }
     }
     
@@ -109,22 +109,22 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read_xlsx(i, skip=Skip)
+          Temp_dataset <- readxl::read_xlsx(i, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read_xlsx(i, skip=Skip)
+          Dataset <- readxl::read_xlsx(i, skip=Skip)
         }
       }
       
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read_xlsx(i, skip=Skip)
+          Temp_dataset <- readxl::read_xlsx(i, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read_xlsx(i, skip=Skip)
+          Dataset <- readxl::read_xlsx(i, skip=Skip)
         }
       }
       
@@ -132,14 +132,14 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read_xlsx(i, skip=Skip)
+        Dataset[[i]] <- readxl::read_xlsx(i, skip=Skip)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read_xlsx(i, skip=Skip)
+        Dataset[[i]] <- readxl::read_xlsx(i, skip=Skip)
       }
     }
     

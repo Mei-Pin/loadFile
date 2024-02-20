@@ -3,7 +3,8 @@ Package: loadFile
 Title: Load files in and combine them
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Wei-Pin", "Hsu", "a179612@gmail.com", role = c("aut", "cre")),
+    person("Wei-Pin", "Hsu", "a179612@gmail.com", role = c("aut", "cre")
+           comment = c(ORCID = "0009-0000-9624-0276")),
     person("Hadley", "Wickham", "hadley@posit.co", role = c("cph", "ctb"),
            comment = "Author of included tidyverse and readxl code"),
     person("Jennifer", "Bryan", "jenny@posit.co", role = c("cph", "ctb"),

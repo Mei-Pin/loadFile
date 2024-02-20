@@ -71,6 +71,8 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
   
   if (File[1]==FALSE) {
     Filename <- list.files()
+  } else {
+    Filename <- File
   }
   
   File_list <- data.frame(Filename)

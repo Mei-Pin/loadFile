@@ -1,6 +1,6 @@
-#' @title load excel files
+#' @title load delimiter-separate files
 #' @description 
-#' Loads excel files that are in the same folder and with same format, 
+#' Loads delimiter-separate files that are in the same folder and with same format, 
 #' then combines them into a dataset.
 #' 
 #' @param Dataname Default "Exceldataset".
@@ -19,8 +19,8 @@
 #' Number of rows skipped before reading file, and 0 in default.
 #' @return A tibble
 #' @examples
-#' # There are several files in the test folder called "data".
-#' path <- "data"
+#' # There are several files in the test folder.
+#' path <- "tests/testthat/data"
 #' 
 #' # The files include "xlsx", "csv", "txt", and "prn".
 #' # The files with same extension have same format.
@@ -32,7 +32,7 @@
 #' # xlsx file
 #' # "a.xlsx" "b.xlsx" "c.xlsx"
 #' # Column titles are "Name", "Height", "Weight", and "Score".
-#' # Data starts from the second row.
+#' # Data starts from second row.
 #' 
 #' # Load all excel file that is in the folder and combine them.
 #' loadEXCEL(Filepath=path)

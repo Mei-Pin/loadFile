@@ -47,7 +47,7 @@
 
 # "loadEXCEL" FUNCTION ---------------------------------
 #set the "loadEXCEL" function
-loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRUE, Colname=FALSE, Skip=0) {
+loadEXCEL <- function(Dataname="EXCELdataset", Filepath, File=FALSE, Combine=TRUE, Colname=FALSE, Skip=0) {
   Package<-installed.packages()
   Package<-Package[,1]
   

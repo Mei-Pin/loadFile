@@ -40,8 +40,8 @@ Loads excel files that are in the same folder and with same format,
 then combines them into a dataset.
 }
 \examples{
-# There are several files in the test folder.
-path <- "tests/testthat/data"
+# There are several files in the test folder called "data".
+path <- "data"
 
 # The files include "xlsx", "csv", "txt", and "prn".
 # The files with same extension have same format.

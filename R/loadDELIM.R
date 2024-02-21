@@ -3,7 +3,7 @@
 #' Loads delimiter-separate files that are in the same folder and with same format, 
 #' then combines them into a dataset.
 #' 
-#' @param Dataname Default "Exceldataset".
+#' @param Dataname Default "DELIMdataset".
 #' The dataset's name you want.
 #' @param Filepath
 #' The folder path.
@@ -19,8 +19,8 @@
 #' Number of rows skipped before reading file, and 0 in default.
 #' @return A tibble
 #' @examples
-#' # There are several files in the test folder.
-#' path <- "tests/testthat/data"
+#' # There are several files in the test folder called "data".
+#' path <- "data"
 #' 
 #' # The files include "xlsx", "csv", "txt", and "prn".
 #' # The files with same extension have same format.
@@ -32,7 +32,7 @@
 #' # xlsx file
 #' # "a.xlsx" "b.xlsx" "c.xlsx"
 #' # Column titles are "Name", "Height", "Weight", and "Score".
-#' # Data starts from second row.
+#' # Data starts from the second row.
 #' 
 #' # Load all excel file that is in the folder and combine them.
 #' loadEXCEL(Filepath=path)
@@ -45,18 +45,12 @@
 #' 
 #' @export
 
-# "loadEXCEL" FUNCTION ---------------------------------
-#set the "loadEXCEL" function
-loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRUE, Colname=FALSE, Skip=0) {
+# "loadDELIM" FUNCTION ---------------------------------
+#set the "loadDELIM" function
+loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRUE,
+                      FileExtention="csv", Header=TRUE, Sep=",", Colname=FALSE, Encoding=FALSE) {
   Package<-installed.packages()
   Package<-Package[,1]
-  
-  if (is.element("readxl", Package)) {
-    library(readxl)
-  } else {
-    install.packages("readxl")
-    library(readxl)
-  }
   
   if (is.element("tidyverse", Package)) {
     library(tidyverse)
@@ -77,28 +71,29 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
   
   File_list <- data.frame(Filename)
   File_input <- File_list %>% 
-    filter(file_extension(Filename) %in% "xlsx")
+    filter(file_extension(Filename) %in% FileExtention)
   
   if (Colname[1]!=FALSE) {
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+          Temp_dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+          Dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
         }
       }
       
-    } else if (Combine==TRUE) {
+      
+    } else if (Combine!=TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+          Temp_dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+          Dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
         }
       }
       
@@ -106,14 +101,53 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- readxl::read_xlsx(i, col_names=Colname, skip=Skip)
+        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+      }
+    }
+    
+  } else if (Encoding!=FALSE) {
+    if (File[1]==FALSE & Combine==TRUE) {
+      for (i in File_input$File) {
+        if (exists("Dataset")) {
+          Temp_dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Dataset <- rbind(Dataset, Temp_dataset)
+          rm(Temp_dataset)
+        } else {
+          Dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+        }
+      }
+      
+      
+    } else if (Combine==TRUE) {
+      for (i in File){
+        if (exists("Dataset")) {
+          Temp_dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Dataset <- rbind(Dataset, Temp_dataset)
+          rm(Temp_dataset)
+        } else {
+          Dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+        }
+      }
+      
+    } else if (File[1]==FALSE & Combine==FALSE) {
+      Dataset <- list()
+      
+      for (i in File_input$File) {
+        Dataset[[i]] <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+      }
+      
+    } else {
+      Dataset <- list()
+      
+      for (i in File) {
+        Dataset[[i]] <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
       }
     }
     
@@ -121,22 +155,23 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_xlsx(i, skip=Skip)
+          Temp_dataset <- read.csv(i, header=Header, sep=Sep)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_xlsx(i, skip=Skip)
+          Dataset <- read.csv(i, header=Header, sep=Sep)
         }
       }
+      
       
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_xlsx(i, skip=Skip)
+          Temp_dataset <- read.csv(i, header=Header, sep=Sep)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_xlsx(i, skip=Skip)
+          Dataset <- read.csv(i, header=Header, sep=Sep)
         }
       }
       
@@ -144,14 +179,14 @@ loadEXCEL <- function(Dataname="Exceldataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- readxl::read_xlsx(i, skip=Skip)
+        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- readxl::read_xlsx(i, skip=Skip)
+        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep)
       }
     }
     

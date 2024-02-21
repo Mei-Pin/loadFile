@@ -32,7 +32,7 @@
 #' # xlsx file
 #' # "a.xlsx" "b.xlsx" "c.xlsx"
 #' # Column titles are "Name", "Height", "Weight", and "Score".
-#' # Data starts from second row.
+#' # Data starts from the second row.
 #' 
 #' # Load all excel file that is in the folder and combine them.
 #' loadEXCEL(Filepath=path)

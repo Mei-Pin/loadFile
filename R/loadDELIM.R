@@ -1,7 +1,7 @@
 #' @title load delimiter-separate files
 #' @description 
-#' Loads delimiter-separate files that are in the same folder and with same format, 
-#' then combines them into a dataset.
+#' Loads delimiter-separate files that are in the same folder and with same 
+#' format, #' then combines them into a dataset.
 #' 
 #' @param Dataname Default "DELIMdataset".
 #' The dataset's name you want.
@@ -13,10 +13,19 @@
 #' @param Combine Default \code{TRUE}.
 #' Combines the files to one dataset in default, or loads file each to 
 #' be a large list's dataset.
+#' @param FileExtension Default "csv".
+#' Types in the file extension.
+#' @param Header Default \code{TRUE}.
+#' Default is setting the first row to column title and read the data from 
+#' second row.
+#' Sets FALSE to read the data from the first row and use V1, V2,... for 
+#' column title instead.
+#' @param Sep Default ",".
+#' Sets the delimiter, and comma in default.
 #' @param Colname Default \code{FALSE}.
 #' Sets the column title to a vector, or gets the original title in default.
-#' @param Skip
-#' Number of rows skipped before reading file, and 0 in default.
+#' @param Encoding Default \code{FALSE}.
+#' Fills in what the file's encoding are, and unknown in default.
 #' @return A tibble
 #' @examples
 #' # There are several files in the test folder called "data".
@@ -29,29 +38,43 @@
 #' # "txt" files' data are tab-seperate.
 #' # "prn" files' data are fixed-width.
 #' 
-#' # xlsx file
-#' # "a.xlsx" "b.xlsx" "c.xlsx"
+#' # csv file
+#' # "a.csv" "b.csv" "c.csv"
 #' # Column titles are "Name", "Height", "Weight", and "Score".
 #' # Data starts from the second row.
 #' 
-#' # Load all excel file that is in the folder and combine them.
-#' loadEXCEL(Filepath=path)
+#' # Load all csv file that is in the folder and combine them.
+#' loadDELIM(Filepath=path)
 #' 
-#' # Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_data".
-#' loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", "c.xlsx"), Combine=FALSE)
+#' # Load "a.csv" and "c.csv", then become two tibble in "Test_data".
+#' loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", "c.csv"), Combine=FALSE)
 #' 
-#' # Load all excel file and skip column title, then set the new.
-#' loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
+#' # Load all csv file and skip column title, then set the new.
+#' loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
+#' 
+#' # txt file
+#' # "a.txt" "b.txt" "c.txt"
+#' # Column titles are "Name", "Height", "Weight", and "Score".
+#' # Data starts from the second row.
+#' 
+#' # Load all txt files that are in the folder and combine them.
+#' loadDELIM(Filepath=path, FileExtension="txt", Sep="")
+#' 
+#' # Load "a.txt" and "c.txt", then become two tibble in "Test_data".
+#' loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", "c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
+#' 
+#' # Load all txt files and skip column title, then set the new.
+#' loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), FileExtension="txt", Sep="")
 #' 
 #' @export
 
 # "loadDELIM" FUNCTION ---------------------------------
 #set the "loadDELIM" function
 loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRUE,
-                      FileExtention="csv", Header=TRUE, Sep=",", Colname=FALSE, Encoding=FALSE) {
+                      FileExtension="csv", Header=TRUE, Sep=",", Colname=FALSE, Encoding=FALSE) {
   Package<-installed.packages()
   Package<-Package[,1]
-  
+  loadDELIM(Filepath=Filepath,Header=F)
   if (is.element("tidyverse", Package)) {
     library(tidyverse)
   } else {
@@ -71,7 +94,7 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
   
   File_list <- data.frame(Filename)
   File_input <- File_list %>% 
-    filter(file_extension(Filename) %in% FileExtention)
+    filter(file_extension(Filename) %in% FileExtension)
   
   if (Colname[1]!=FALSE) {
     if (File[1]==FALSE & Combine==TRUE) {

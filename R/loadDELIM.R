@@ -74,7 +74,7 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
                       FileExtension="csv", Header=TRUE, Sep=",", Colname=FALSE, Encoding=FALSE) {
   Package<-installed.packages()
   Package<-Package[,1]
-  loadDELIM(Filepath=Filepath,Header=F)
+  
   if (is.element("tidyverse", Package)) {
     library(tidyverse)
   } else {

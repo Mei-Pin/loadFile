@@ -2,3 +2,7 @@
 
 export(loadDELIM)
 export(loadEXCEL)
+import(magrittr)
+import(tidyverse)
+importFrom(dplyr,filter)
+importFrom(utils,read.csv)

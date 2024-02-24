@@ -1,7 +1,7 @@
 #' @title load delimiter-separate files
 #' @description 
 #' Loads delimiter-separate files that are in the same folder and with same 
-#' format, #' then combines them into a dataset.
+#' format,then combines them into a dataset.
 #' 
 #' @param Dataname Default "DELIMdataset".
 #' The dataset's name you want.
@@ -26,11 +26,20 @@
 #' Sets the column title to a vector, or gets the original title in default.
 #' @param Encoding Default \code{FALSE}.
 #' Fills in what the file's encoding are, and unknown in default.
-#' @return A tibble
+#' @return A tibble or tibbles in one list
+#' @import magrittr
+#' @import tidyverse
+#' @importFrom dplyr filter
+#' @importFrom utils read.csv
 #' @examples
-#' # There are several files in the test folder called "data".
-#' path <- "data"
 #' 
+#' # There are several files in the test folder called "extdata".
+#' # The folder path should fill in the folder directory of "extdata".
+#' \dontshow{
+#'   path1 <- file.path(system.file("extdata", package = "loadFile"))
+#'   path <- paste0(path1, "/")
+#'   Dataset <- list()
+#' }
 #' # The files include "xlsx", "csv", "txt", and "prn".
 #' # The files with same extension have same format.
 #' # "xlsx" files are excel files.
@@ -47,7 +56,8 @@
 #' loadDELIM(Filepath=path)
 #' 
 #' # Load "a.csv" and "c.csv", then become two tibble in "Test_data".
-#' loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", "c.csv"), Combine=FALSE)
+#' loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", 
+#' "c.csv"), Combine=FALSE)
 #' 
 #' # Load all csv file and skip column title, then set the new.
 #' loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
@@ -61,10 +71,12 @@
 #' loadDELIM(Filepath=path, FileExtension="txt", Sep="")
 #' 
 #' # Load "a.txt" and "c.txt", then become two tibble in "Test_data".
-#' loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", "c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
+#' loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", 
+#' "c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
 #' 
 #' # Load all txt files and skip column title, then set the new.
-#' loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), FileExtension="txt", Sep="")
+#' loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), 
+#' FileExtension="txt", Sep="")
 #' 
 #' @export
 
@@ -72,39 +84,26 @@
 #set the "loadDELIM" function
 loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRUE,
                       FileExtension="csv", Header=TRUE, Sep=",", Colname=FALSE, Encoding=FALSE) {
-  Package<-installed.packages()
-  Package<-Package[,1]
-  
-  if (is.element("tidyverse", Package)) {
-    library(tidyverse)
-  } else {
-    install.packages("tidyverse")
-    library(tidyverse)
-  }
-  
-  rm(Package)
-  
-  setwd(Filepath)
-  
+
   if (File[1]==FALSE) {
-    Filename <- list.files()
+    Filename <- list.files(Filepath)
   } else {
     Filename <- File
   }
   
   File_list <- data.frame(Filename)
   File_input <- File_list %>% 
-    filter(file_extension(Filename) %in% FileExtension)
+    dplyr::filter(file_extension(Filename) %in% FileExtension)
   
   if (Colname[1]!=FALSE) {
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
         }
       }
       
@@ -112,11 +111,11 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
     } else if (Combine!=TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
         }
       }
       
@@ -124,14 +123,14 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep, col.names=Colname)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)
       }
     }
     
@@ -139,11 +138,11 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
         }
       }
       
@@ -151,11 +150,11 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
         }
       }
       
@@ -163,14 +162,14 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.csv(i, header=TRUE, sep=Sep, fileEncoding=Encoding)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=TRUE, sep=Sep, fileEncoding=Encoding)
       }
     }
     
@@ -178,11 +177,11 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=Header, sep=Sep)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=Header, sep=Sep)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
         }
       }
       
@@ -190,11 +189,11 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.csv(i, header=Header, sep=Sep)
+          Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.csv(i, header=Header, sep=Sep)
+          Dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
         }
       }
       
@@ -202,21 +201,22 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.csv(i, header=Header, sep=Sep)
+        Dataset[[i]] <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep)
       }
     }
     
   }
   
-  assign(Dataname, Dataset, .GlobalEnv)
-  rm(File_list, File_input, i, Dataset)
+  Glo <- .GlobalEnv
+  assign(Dataname, Dataset, Glo)
+  rm(File_list, File_input, i, Dataset, Glo)
 }
 
 # "file_extension" FUNCTION ---------------------------------

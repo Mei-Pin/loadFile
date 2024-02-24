@@ -49,16 +49,21 @@ Sets the column title to a vector, or gets the original title in default.}
 Fills in what the file's encoding are, and unknown in default.}
 }
 \value{
-A tibble
+A tibble or tibbles in one list
 }
 \description{
 Loads delimiter-separate files that are in the same folder and with same
-format, #' then combines them into a dataset.
+format,then combines them into a dataset.
 }
 \examples{
-# There are several files in the test folder called "data".
-path <- "data"
 
+# There are several files in the test folder called "extdata".
+# The folder path should fill in the folder directory of "extdata".
+\dontshow{
+  path1 <- file.path(system.file("extdata", package = "loadFile"))
+  path <- paste0(path1, "/")
+  Dataset <- list()
+}
 # The files include "xlsx", "csv", "txt", and "prn".
 # The files with same extension have same format.
 # "xlsx" files are excel files.
@@ -75,7 +80,8 @@ path <- "data"
 loadDELIM(Filepath=path)
 
 # Load "a.csv" and "c.csv", then become two tibble in "Test_data".
-loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", "c.csv"), Combine=FALSE)
+loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", 
+"c.csv"), Combine=FALSE)
 
 # Load all csv file and skip column title, then set the new.
 loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
@@ -89,9 +95,11 @@ loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
 loadDELIM(Filepath=path, FileExtension="txt", Sep="")
 
 # Load "a.txt" and "c.txt", then become two tibble in "Test_data".
-loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", "c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
+loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", 
+"c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
 
 # Load all txt files and skip column title, then set the new.
-loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), FileExtension="txt", Sep="")
+loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), 
+FileExtension="txt", Sep="")
 
 }

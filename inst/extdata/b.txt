@@ -1,0 +1,5 @@
+Name	Height	Weight	Score
+Mandy	165	42	2
+Penny	160	48	4
+John	145	35	3
+Cherry	170	55	5

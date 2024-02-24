@@ -77,14 +77,15 @@ format,then combines them into a dataset.
 # Data starts from the second row.
 
 # Load all csv file that is in the folder and combine them.
-loadDELIM(Filepath=path)
+loadDELIM(Dataname=c("Test_All1"), Filepath=path)
 
-# Load "a.csv" and "c.csv", then become two tibble in "Test_data".
-loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", 
+# Load "a.csv" and "c.csv", then become two tibble in "Test_a&c1".
+loadDELIM(Dataname=c("Test_a&c1"), Filepath=path, File=c("a.csv", 
 "c.csv"), Combine=FALSE)
 
 # Load all csv file and skip column title, then set the new.
-loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
+loadDELIM(Dataname=c("Test_Colname1"), Filepath=path, Colname=c("Name_d", 
+"H", "W", "score"))
 
 # txt file
 # "a.txt" "b.txt" "c.txt"
@@ -92,14 +93,16 @@ loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
 # Data starts from the second row.
 
 # Load all txt files that are in the folder and combine them.
-loadDELIM(Filepath=path, FileExtension="txt", Sep="")
+loadDELIM(Dataname=c("Test_All2"), Filepath=path, FileExtension="txt", 
+Sep="")
 
 # Load "a.txt" and "c.txt", then become two tibble in "Test_data".
-loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", 
-"c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
+loadDELIM(Dataname=c("Test_a&c2"), Filepath=path, File=c("a.txt", "c.txt"), 
+Combine=FALSE, FileExtension="txt", Sep="")
 
 # Load all txt files and skip column title, then set the new.
-loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), 
+loadDELIM(Dataname=c("Test_Colname2"), Filepath=path, Colname=c("Name_d", 
+"H", "W", "score"), 
 FileExtension="txt", Sep="")
 
 }

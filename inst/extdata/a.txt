@@ -1,0 +1,4 @@
+Name	Height	Weight	Score
+Justin	135	40	3
+Bob	140	50	3
+Tony	155	45	4

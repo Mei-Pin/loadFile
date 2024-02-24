@@ -33,16 +33,21 @@ Sets the column title to a vector, or gets the original title in default.}
 \item{Skip}{Number of rows skipped before reading file, and 0 in default.}
 }
 \value{
-A tibble
+A tibble or tibbles in one list
 }
 \description{
 Loads excel files that are in the same folder and with same format,
 then combines them into a dataset.
 }
 \examples{
-# There are several files in the test folder called "data".
-path <- "data"
 
+# There are several files in the test folder called "extdata".
+# The folder path should fill in the folder directory of "extdata".
+\dontshow{
+  path1 <- file.path(system.file("extdata", package = "loadFile"))
+  path <- paste0(path1, "/")
+  Dataset <- list()
+}
 # The files include "xlsx", "csv", "txt", and "prn".
 # The files with same extension have same format.
 # "xlsx" files are excel files.
@@ -55,13 +60,14 @@ path <- "data"
 # Column titles are "Name", "Height", "Weight", and "Score".
 # Data starts from the second row.
 
-# Load all excel file that is in the folder and combine them.
+# Load all excel files that are in the folder and combine them.
 loadEXCEL(Filepath=path)
 
 # Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_data".
-loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", "c.xlsx"), Combine=FALSE)
+loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", 
+"c.xlsx"), Combine=FALSE)
 
-# Load all excel file and skip column title, then set the new.
+# Load all excel files and skip column title, then set the new.
 loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
 
 }

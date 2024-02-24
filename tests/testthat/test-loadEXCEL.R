@@ -1,30 +1,32 @@
 library("loadFile")
 
+path <- getwd()
+
 if (grepl("/tests/testthat/data", getwd())) {
   path <- path
 } else {
-  path <- paste0(getwd(),"/data")
+  path <- paste0(getwd(),"/data/")
 }
 
 testthat::test_that(
-  "Load all excel file that is in the folder and combine them.", {
+  "Load all excel files that are in the folder and combine them.", {
   
-  a <- readxl::read_excel(paste0(path,"/a.xlsx"))
-  b <- readxl::read_excel(paste0(path,"/b.xlsx"))
-  c <- readxl::read_excel(paste0(path,"/c.xlsx"))
+  a <- readxl::read_excel(paste0(path, "a.xlsx"))
+  b <- readxl::read_excel(paste0(path, "b.xlsx"))
+  c <- readxl::read_excel(paste0(path, "c.xlsx"))
   abc <- rbind(a,b,c)
   
   loadEXCEL(Filepath=path)
   
-  expect_equal(Exceldataset, abc)
+  expect_equal(EXCELdataset, abc)
   }
 )
 
 testthat::test_that(
-  "Load a.xlsx and c.xlsx, then become two tibble in Test_data.", {
+  "Load a.xlsx and c.xlsx, then become two tibbles in Test_data.", {
   
-  a <- readxl::read_excel(paste0(path,"/a.xlsx"))
-  c <- readxl::read_excel(paste0(path,"/c.xlsx"))
+  a <- readxl::read_excel(paste0(path, "a.xlsx"))
+  c <- readxl::read_excel(paste0(path, "c.xlsx"))
   ac <- rbind(a,c)
   ac_list <- list(a,c)
   names(ac_list) <- c("a.xlsx", "c.xlsx")
@@ -37,15 +39,15 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "Load all excel file and skip column title, then set the new.", {
+  "Load all excel files and skip column title, then set the new.", {
     
-    a <- readxl::read_excel(paste0(path,"/a.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
-    b <- readxl::read_excel(paste0(path,"/b.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
-    c <- readxl::read_excel(paste0(path,"/c.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
-    abc <- rbind(a,b,c)
+  a <- readxl::read_excel(paste0(path, "a.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
+  b <- readxl::read_excel(paste0(path, "b.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
+  c <- readxl::read_excel(paste0(path, "c.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
+  abc <- rbind(a,b,c)
 
-    loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
+  loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
     
-    expect_equal(Exceldataset, abc)
+  expect_equal(EXCELdataset, abc)
   }
 )

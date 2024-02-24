@@ -9,7 +9,7 @@ loadDELIM(
   Filepath,
   File = FALSE,
   Combine = TRUE,
-  FileExtention = "csv",
+  FileExtension = "csv",
   Header = TRUE,
   Sep = ",",
   Colname = FALSE,
@@ -30,22 +30,40 @@ put all the excel files in the folder into the function in default.}
 Combines the files to one dataset in default, or loads file each to
 be a large list's dataset.}
 
+\item{FileExtension}{Default "csv".
+Types in the file extension.}
+
+\item{Header}{Default \code{TRUE}.
+Default is setting the first row to column title and read the data from
+second row.
+Sets FALSE to read the data from the first row and use V1, V2,... for
+column title instead.}
+
+\item{Sep}{Default ",".
+Sets the delimiter, and comma in default.}
+
 \item{Colname}{Default \code{FALSE}.
 Sets the column title to a vector, or gets the original title in default.}
 
-\item{Skip}{Number of rows skipped before reading file, and 0 in default.}
+\item{Encoding}{Default \code{FALSE}.
+Fills in what the file's encoding are, and unknown in default.}
 }
 \value{
-A tibble
+A tibble or tibbles in one list
 }
 \description{
-Loads delimiter-separate files that are in the same folder and with same format,
-then combines them into a dataset.
+Loads delimiter-separate files that are in the same folder and with same
+format,then combines them into a dataset.
 }
 \examples{
-# There are several files in the test folder called "data".
-path <- "data"
 
+# There are several files in the test folder called "extdata".
+# The folder path should fill in the folder directory of "extdata".
+\dontshow{
+  path1 <- file.path(system.file("extdata", package = "loadFile"))
+  path <- paste0(path1, "/")
+  Dataset <- list()
+}
 # The files include "xlsx", "csv", "txt", and "prn".
 # The files with same extension have same format.
 # "xlsx" files are excel files.
@@ -53,18 +71,35 @@ path <- "data"
 # "txt" files' data are tab-seperate.
 # "prn" files' data are fixed-width.
 
-# xlsx file
-# "a.xlsx" "b.xlsx" "c.xlsx"
+# csv file
+# "a.csv" "b.csv" "c.csv"
 # Column titles are "Name", "Height", "Weight", and "Score".
 # Data starts from the second row.
 
-# Load all excel file that is in the folder and combine them.
-loadEXCEL(Filepath=path)
+# Load all csv file that is in the folder and combine them.
+loadDELIM(Filepath=path)
 
-# Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_data".
-loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", "c.xlsx"), Combine=FALSE)
+# Load "a.csv" and "c.csv", then become two tibble in "Test_data".
+loadDELIM(Dataname=c("Test_data_1"), Filepath=path, File=c("a.csv", 
+"c.csv"), Combine=FALSE)
 
-# Load all excel file and skip column title, then set the new.
-loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
+# Load all csv file and skip column title, then set the new.
+loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
+
+# txt file
+# "a.txt" "b.txt" "c.txt"
+# Column titles are "Name", "Height", "Weight", and "Score".
+# Data starts from the second row.
+
+# Load all txt files that are in the folder and combine them.
+loadDELIM(Filepath=path, FileExtension="txt", Sep="")
+
+# Load "a.txt" and "c.txt", then become two tibble in "Test_data".
+loadDELIM(Dataname=c("Test_data_2"), Filepath=path, File=c("a.txt", 
+"c.txt"), Combine=FALSE, FileExtension="txt", Sep="")
+
+# Load all txt files and skip column title, then set the new.
+loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), 
+FileExtension="txt", Sep="")
 
 }

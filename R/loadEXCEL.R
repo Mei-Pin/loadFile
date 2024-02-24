@@ -43,14 +43,15 @@
 #' # Data starts from the second row.
 #' 
 #' # Load all excel files that are in the folder and combine them.
-#' loadEXCEL(Filepath=path)
+#' loadEXCEL(Dataname=c("Test_All"), Filepath=path)
 #'
-#' # Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_data".
-#' loadEXCEL(Dataname=c("Test_data"), Filepath=path, File=c("a.xlsx", 
+#' # Load "a.xlsx" and "c.xlsx", then become two tibble in "Test_a&c".
+#' loadEXCEL(Dataname=c("Test_a&c"), Filepath=path, File=c("a.xlsx", 
 #' "c.xlsx"), Combine=FALSE)
 #' 
 #' # Load all excel files and skip column title, then set the new.
-#' loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
+#' loadEXCEL(Dataname=c("Test_Colname"), Filepath=path, Colname=c("Name_d", 
+#' "H", "W", "score"), Skip=1)
 #' 
 #' @export
 

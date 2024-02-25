@@ -2,7 +2,9 @@
 
 export(loadDELIM)
 export(loadEXCEL)
+export(loadWIDTH)
 import(magrittr)
 import(tidyverse)
 importFrom(dplyr,filter)
 importFrom(utils,read.csv)
+importFrom(utils,read.fwf)

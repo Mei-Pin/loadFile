@@ -1,12 +1,7 @@
 library("loadFile")
 
-path <- getwd()
-
-if (grepl("/tests/testthat/data", getwd())) {
-  path <- path
-} else {
-  path <- paste0(getwd(),"/data/")
-}
+path1 <- file.path(system.file("/tests/testthat/data", package = "loadFile"))
+path <- paste0(path1, "/")
 
 testthat::test_that(
   "Load all excel files that are in the folder and combine them.", {

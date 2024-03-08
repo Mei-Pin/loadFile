@@ -110,7 +110,7 @@ loadDELIM <- function(Dataname="DELIMdataset", Filepath, File=FALSE, Combine=TRU
       }
       
       
-    } else if (Combine!=TRUE) {
+    } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
           Temp_dataset <- read.csv(paste0(Filepath, "/", i), header=Header, sep=Sep, col.names=Colname)

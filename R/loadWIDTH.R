@@ -96,7 +96,7 @@ loadWIDTH <- function(Dataname="WIDTHdataset", Filepath, File=FALSE, Combine=TRU
       }
       
       
-    } else if (Combine!=TRUE) {
+    } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
           Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)

@@ -7,7 +7,7 @@
 #' The dataset's name you want.
 #' @param Filepath
 #' The folder path.
-#' @param File Default \code{FALSE}.
+#' @param File Default \code{NULL}.
 #' Sets one or several files' name with their extension to a vector, or 
 #' put all the excel files in the folder into the function in default.
 #' @param Combine Default \code{TRUE}.
@@ -18,13 +18,15 @@
 #' @param Header Default \code{TRUE}.
 #' Default is setting the first row to column title and read the data from 
 #' second row.
-#' Sets FALSE to read the data from the first row and use V1, V2,... for 
+#' Sets FALSE to read the data from the first row and use V1, V2, ... for 
 #' column title instead.
 #' @param Width
 #' Sets the width for each variable to a vector.
-#' @param Colname Default \code{FALSE}.
-#' Sets the column title to a vector, or gets the original title in default.
-#' @param Encoding Default \code{FALSE}.
+#' @param Colname Default \code{NULL}.
+#' Sets a vector for the column title, or gets the original title in default.
+#' @param Skip Default "0".
+#' Number of rows skipped before reading file, and 0 in default.
+#' @param Encoding Default "".
 #' Fills in what the file's encoding are, and unknown in default.
 #' @return A tibble or tibbles in one list
 #' @import magrittr
@@ -60,9 +62,9 @@
 #' 
 #' # Load "a.prn" and "c.prn", then become two tibble in "Test_a&c1".
 #' loadWIDTH(Dataname=c("Test_a&c"), Filepath=path, Header=FALSE, 
-#' File=c("a.csv", "c.csv"), Combine=FALSE, Width=c(6, 3, 2, 1))
+#' File=c("a.prn", "c.prn"), Combine=FALSE, Width=c(6, 3, 2, 1))
 #' 
-#' # Load all csv file and skip column title, then set the new.
+#' # Load all prn file and set the column title.
 #' loadWIDTH(Dataname=c("Test_Colname"), Filepath=path, Header=FALSE, 
 #' Width=c(6, 3, 2, 1), Colname=c("Name_d", "H", "W", "score"))
 #' 
@@ -70,10 +72,13 @@
 
 # "loadWIDTH" FUNCTION ---------------------------------
 #set the "loadWIDTH" function
-loadWIDTH <- function(Dataname="WIDTHdataset", Filepath, File=FALSE, Combine=TRUE,
-                      FileExtension="prn", Header=TRUE, Width, Colname=FALSE, Encoding=FALSE) {
+loadWIDTH <- function(
+    Dataname="WIDTHdataset", Filepath, File=NULL, Combine=TRUE, 
+    FileExtension="prn", Header=TRUE, Width, Colname=NULL, 
+    Skip=0, Encoding=""
+) {
 
-  if (File[1]==FALSE) {
+  if (is.null(File)) {
     Filename <- list.files(Filepath)
   } else {
     Filename <- File
@@ -83,36 +88,41 @@ loadWIDTH <- function(Dataname="WIDTHdataset", Filepath, File=FALSE, Combine=TRU
   File_input <- File_list %>% 
     dplyr::filter(file_extension(Filename) %in% FileExtension)
   
-  if (Colname[1]!=FALSE) {
-    if (File[1]==FALSE & Combine==TRUE) {
+  if (!is.null(Colname)) {
+    if (is.null(File) & isTRUE(Combine)) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Temp_dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                   widths=Width, skip=Skip, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                              widths=Width, skip=Skip, fileEncoding=Encoding)
         }
       }
       names(Dataset) <- Colname
       
-    } else if (Combine==TRUE) {
+    } else if (isTRUE(Combine)) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Temp_dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                   widths=Width, skip=Skip, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                              widths=Width, skip=Skip, fileEncoding=Encoding)
         }
       }
       names(Dataset) <- Colname
       
-    } else if (File[1]==FALSE & Combine==FALSE) {
+    } else if (is.null(File) & isFALSE(Combine)) {
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+        Dataset[[i]] <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                 widths=Width, skip=Skip, fileEncoding=Encoding)
       }
       names(Dataset) <- Colname
       
@@ -120,87 +130,54 @@ loadWIDTH <- function(Dataname="WIDTHdataset", Filepath, File=FALSE, Combine=TRU
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+        Dataset[[i]] <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                 widths=Width, skip=Skip, fileEncoding=Encoding)
       }
       names(Dataset) <- Colname
       
-    }
-    
-  } else if (Encoding!=FALSE) {
-    if (File[1]==FALSE & Combine==TRUE) {
-      for (i in File_input$File) {
-        if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-          Dataset <- rbind(Dataset, Temp_dataset)
-          rm(Temp_dataset)
-        } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-        }
-      }
-      
-      
-    } else if (Combine==TRUE) {
-      for (i in File){
-        if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-          Dataset <- rbind(Dataset, Temp_dataset)
-          rm(Temp_dataset)
-        } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-        }
-      }
-      
-    } else if (File[1]==FALSE & Combine==FALSE) {
-      Dataset <- list()
-      
-      for (i in File_input$File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-      }
-      
-    } else {
-      Dataset <- list()
-      
-      for (i in File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=TRUE, widths=Width, fileEncoding=Encoding)
-      }
     }
     
   } else {
-    if (File[1]==FALSE & Combine==TRUE) {
+    if (is.null(File) & isTRUE(Combine)) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Temp_dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                   widths=Width, skip=Skip, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                              widths=Width, skip=Skip, fileEncoding=Encoding)
         }
       }
       
-      
-    } else if (Combine==TRUE) {
+    } else if (isTRUE(Combine)) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Temp_dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                   widths=Width, skip=Skip, fileEncoding=Encoding)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+          Dataset <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                              widths=Width, skip=Skip, fileEncoding=Encoding)
         }
       }
       
-    } else if (File[1]==FALSE & Combine==FALSE) {
+    } else if (is.null(File) & isFALSE(Combine)) {
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+        Dataset[[i]] <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                 widths=Width, skip=Skip, fileEncoding=Encoding)
       }
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
+        Dataset[[i]] <- read.fwf(file=paste0(Filepath, "/", i), header=Header, 
+                                 widths=Width, skip=Skip, fileEncoding=Encoding)
       }
     }
     

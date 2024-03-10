@@ -5,7 +5,7 @@ path <- paste0(path1, "/")
 
 # test load prn file
 testthat::test_that(
-  "Load all prn files that are in the folder and combine them.", {
+  "Load all prn files which with no column title that are in the folder and combine them.", {
   
   a <- read.fwf(paste0(path, "/", "a.prn"), header=FALSE, widths=c(6, 3, 2, 1))
   b <- read.fwf(paste0(path, "/", "b.prn"), header=FALSE, widths=c(6, 3, 2, 1))
@@ -19,7 +19,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "Load a.prn and c.prn, then become two tibbles in Test_data.", {
+  "Load a.prn and c.prn which with no column title, then become two tibbles in Test_data.", {
   
   a <- read.fwf(paste0(path, "/", "a.prn"), header=FALSE, widths=c(6, 3, 2, 1))
   c <- read.fwf(paste0(path, "/", "c.prn"), header=FALSE, widths=c(6, 3, 2, 1))
@@ -35,7 +35,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "Load all prn files and skip column title, then set the new.", {
+  "Load all prn files which with no column title and set the column title.", {
     
   a <- read.fwf(paste0(path, "/", "a.prn"), header=FALSE, widths=c(6, 3, 2, 1), col.names=c("Name_d", "H", "W", "score"))
   b <- read.fwf(paste0(path, "/", "b.prn"), header=FALSE, widths=c(6, 3, 2, 1), col.names=c("Name_d", "H", "W", "score"))

@@ -7,9 +7,10 @@
 loadEXCEL(
   Dataname = "EXCELdataset",
   Filepath,
-  File = FALSE,
+  File = NULL,
   Combine = TRUE,
-  Colname = FALSE,
+  Header = TRUE,
+  Colname = NULL,
   Skip = 0
 )
 }
@@ -19,7 +20,7 @@ The dataset's name you want.}
 
 \item{Filepath}{The folder path.}
 
-\item{File}{Default \code{FALSE}.
+\item{File}{Default \code{NULL}.
 Sets one or several files' name with their extension to a vector, or
 put all the excel files in the folder into the function in default.}
 
@@ -27,10 +28,17 @@ put all the excel files in the folder into the function in default.}
 Combines the files to one dataset in default, or loads file each to
 be a large list's dataset.}
 
-\item{Colname}{Default \code{FALSE}.
-Sets the column title to a vector, or gets the original title in default.}
+\item{Header}{Default \code{TRUE}.
+Default is setting the first row to column title and read the data from
+second row.
+Sets FALSE to read the data from the first row and use ...1, ...2,... for
+column title instead.}
 
-\item{Skip}{Number of rows skipped before reading file, and 0 in default.}
+\item{Colname}{Default \code{NULL}.
+Sets a vector for the column title, or gets the original title in default.}
+
+\item{Skip}{Default "0".
+Number of rows skipped before reading file, and 0 in default.}
 }
 \value{
 A tibble or tibbles in one list
@@ -69,6 +77,6 @@ loadEXCEL(Dataname=c("Test_a&c"), Filepath=path, File=c("a.xlsx",
 
 # Load all excel files and skip column title, then set the new.
 loadEXCEL(Dataname=c("Test_Colname"), Filepath=path, Colname=c("Name_d", 
-"H", "W", "score"), Skip=1)
+"H", "W", "score"), Header=FALSE, Skip=1)
 
 }

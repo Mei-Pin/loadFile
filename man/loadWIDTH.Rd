@@ -7,13 +7,14 @@
 loadWIDTH(
   Dataname = "WIDTHdataset",
   Filepath,
-  File = FALSE,
+  File = NULL,
   Combine = TRUE,
   FileExtension = "prn",
   Header = TRUE,
   Width,
-  Colname = FALSE,
-  Encoding = FALSE
+  Colname = NULL,
+  Skip = 0,
+  Encoding = ""
 )
 }
 \arguments{
@@ -22,7 +23,7 @@ The dataset's name you want.}
 
 \item{Filepath}{The folder path.}
 
-\item{File}{Default \code{FALSE}.
+\item{File}{Default \code{NULL}.
 Sets one or several files' name with their extension to a vector, or
 put all the excel files in the folder into the function in default.}
 
@@ -36,15 +37,18 @@ Types in the file extension.}
 \item{Header}{Default \code{TRUE}.
 Default is setting the first row to column title and read the data from
 second row.
-Sets FALSE to read the data from the first row and use V1, V2,... for
+Sets FALSE to read the data from the first row and use V1, V2, ... for
 column title instead.}
 
 \item{Width}{Sets the width for each variable to a vector.}
 
-\item{Colname}{Default \code{FALSE}.
-Sets the column title to a vector, or gets the original title in default.}
+\item{Colname}{Default \code{NULL}.
+Sets a vector for the column title, or gets the original title in default.}
 
-\item{Encoding}{Default \code{FALSE}.
+\item{Skip}{Default "0".
+Number of rows skipped before reading file, and 0 in default.}
+
+\item{Encoding}{Default "".
 Fills in what the file's encoding are, and unknown in default.}
 }
 \value{
@@ -83,9 +87,9 @@ Width=c(6, 3, 2, 1))
 
 # Load "a.prn" and "c.prn", then become two tibble in "Test_a&c1".
 loadWIDTH(Dataname=c("Test_a&c"), Filepath=path, Header=FALSE, 
-File=c("a.csv", "c.csv"), Combine=FALSE, Width=c(6, 3, 2, 1))
+File=c("a.prn", "c.prn"), Combine=FALSE, Width=c(6, 3, 2, 1))
 
-# Load all csv file and skip column title, then set the new.
+# Load all prn file and set the column title.
 loadWIDTH(Dataname=c("Test_Colname"), Filepath=path, Header=FALSE, 
 Width=c(6, 3, 2, 1), Colname=c("Name_d", "H", "W", "score"))
 

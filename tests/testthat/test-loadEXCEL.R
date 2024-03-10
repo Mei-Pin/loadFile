@@ -41,7 +41,7 @@ testthat::test_that(
   c <- readxl::read_excel(paste0(path, "c.xlsx"), col_names=c("Name_d", "H", "W", "score"), skip=1)
   abc <- rbind(a,b,c)
 
-  loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Skip=1)
+  loadEXCEL(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Header=FALSE, Skip=1)
     
   expect_equal(EXCELdataset, abc)
   }

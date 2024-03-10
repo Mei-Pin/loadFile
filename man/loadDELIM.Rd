@@ -7,13 +7,14 @@
 loadDELIM(
   Dataname = "DELIMdataset",
   Filepath,
-  File = FALSE,
+  File = NULL,
   Combine = TRUE,
   FileExtension = "csv",
   Header = TRUE,
   Sep = ",",
-  Colname = FALSE,
-  Encoding = FALSE
+  Colname = NULL,
+  Skip = 0,
+  Encoding = ""
 )
 }
 \arguments{
@@ -22,7 +23,7 @@ The dataset's name you want.}
 
 \item{Filepath}{The folder path.}
 
-\item{File}{Default \code{FALSE}.
+\item{File}{Default \code{NULL}.
 Sets one or several files' name with their extension to a vector, or
 put all the excel files in the folder into the function in default.}
 
@@ -36,16 +37,19 @@ Types in the file extension.}
 \item{Header}{Default \code{TRUE}.
 Default is setting the first row to column title and read the data from
 second row.
-Sets FALSE to read the data from the first row and use V1, V2,... for
+Sets FALSE to read the data from the first row and use V1, V2, ... for
 column title instead.}
 
 \item{Sep}{Default ",".
 Sets the delimiter, and comma in default.}
 
-\item{Colname}{Default \code{FALSE}.
-Sets the column title to a vector, or gets the original title in default.}
+\item{Colname}{Default \code{NULL}.
+Sets a vector for the column title, or gets the original title in default.}
 
-\item{Encoding}{Default \code{FALSE}.
+\item{Skip}{Default "0".
+Number of rows skipped before reading file, and 0 in default.}
+
+\item{Encoding}{Default "".
 Fills in what the file's encoding are, and unknown in default.}
 }
 \value{
@@ -85,7 +89,7 @@ loadDELIM(Dataname=c("Test_a&c1"), Filepath=path, File=c("a.csv",
 
 # Load all csv file and skip column title, then set the new.
 loadDELIM(Dataname=c("Test_Colname1"), Filepath=path, Colname=c("Name_d", 
-"H", "W", "score"))
+"H", "W", "score"), Header=FALSE, Skip=1)
 
 # txt file
 # "a.txt" "b.txt" "c.txt"
@@ -102,6 +106,6 @@ Combine=FALSE, FileExtension="txt", Sep="")
 
 # Load all txt files and skip column title, then set the new.
 loadDELIM(Dataname=c("Test_Colname2"), Filepath=path, Colname=c("Name_d", 
-"H", "W", "score"), FileExtension="txt", Sep="")
+"H", "W", "score"), FileExtension="txt", Header=FALSE, Sep="", Skip=1)
 
 }

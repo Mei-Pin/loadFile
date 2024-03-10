@@ -42,7 +42,7 @@ testthat::test_that(
   c <- read.csv(paste0(path, "/", "c.csv"), col.names=c("Name_d", "H", "W", "score"))
   abc <- rbind(a,b,c)
     
-  loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"))
+  loadDELIM(Filepath=path, Colname=c("Name_d", "H", "W", "score"), Header=FALSE, Skip=1)
     
   expect_equal(DELIMdataset, abc)
   }
@@ -80,14 +80,14 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "Load all csv files and skip column title, then set the new.", {
+  "Load all txt files and skip column title, then set the new.", {
     
     a <- read.csv(paste0(path, "/", "a.txt"), sep="", col.names=c("Name_d", "H", "W", "score"))
     b <- read.csv(paste0(path, "/", "b.txt"), sep="", col.names=c("Name_d", "H", "W", "score"))
     c <- read.csv(paste0(path, "/", "c.txt"), sep="", col.names=c("Name_d", "H", "W", "score"))
     abc <- rbind(a,b,c)
     
-    loadDELIM(Filepath=path, FileExtension="txt", Sep="", Colname=c("Name_d", "H", "W", "score"))
+    loadDELIM(Filepath=path, FileExtension="txt", Sep="", Colname=c("Name_d", "H", "W", "score"), Header=FALSE, Skip=1)
     
     expect_equal(DELIMdataset, abc)
   }

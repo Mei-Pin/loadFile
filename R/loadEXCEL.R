@@ -73,38 +73,43 @@ loadEXCEL <- function(Dataname="EXCELdataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$Filename) {
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+          Temp_dataset <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+          Dataset <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
         }
       }
+      names(Dataset) <- Colname
       
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+          Temp_dataset <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+          Dataset <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
         }
       }
+      names(Dataset) <- Colname
       
     } else if (File[1]==FALSE & Combine==FALSE) {
       Dataset <- list()
       
       for (i in File_input$Filename) {
-        Dataset[[i]] <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+        Dataset[[i]] <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
       }
+      names(Dataset) <- Colname
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- readxl::read_excel(paste0(Filepath, i), col_names=Colname, skip=Skip)
+        Dataset[[i]] <- readxl::read_excel(paste0(Filepath, i), col_names=FALSE, skip=Skip)
       }
+      names(Dataset) <- Colname
+      
     }
     
   } else {

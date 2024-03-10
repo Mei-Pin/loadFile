@@ -87,39 +87,43 @@ loadWIDTH <- function(Dataname="WIDTHdataset", Filepath, File=FALSE, Combine=TRU
     if (File[1]==FALSE & Combine==TRUE) {
       for (i in File_input$File) {
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
         }
       }
-      
+      names(Dataset) <- Colname
       
     } else if (Combine==TRUE) {
       for (i in File){
         if (exists("Dataset")) {
-          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+          Temp_dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
           Dataset <- rbind(Dataset, Temp_dataset)
           rm(Temp_dataset)
         } else {
-          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+          Dataset <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
         }
       }
+      names(Dataset) <- Colname
       
     } else if (File[1]==FALSE & Combine==FALSE) {
       Dataset <- list()
       
       for (i in File_input$File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
       }
+      names(Dataset) <- Colname
       
     } else {
       Dataset <- list()
       
       for (i in File) {
-        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width, col.names=Colname)
+        Dataset[[i]] <- read.fwf(paste0(Filepath, "/", i), header=Header, widths=Width)
       }
+      names(Dataset) <- Colname
+      
     }
     
   } else if (Encoding!=FALSE) {
